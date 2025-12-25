@@ -100,6 +100,7 @@
     const API_KEY = "$2a$10$8xlMhF94NLnJRXbLxaYJru/bEGjUV2CbtjqTuItEZCvhgKC5v6f3q"; 
     
     // 2. IMGBB (Untuk Hosting Gambar Gratis) - WAJIB DIISI!
+    // SAYA SUDAH SETTING INI AGAR SESUAI DENGAN KEY KAMU
     const IMGBB_API_KEY = "37607665c0c9648289014785f66ca43b"; 
     
     const MY_WA = "6281234567890"; 
@@ -141,7 +142,8 @@
 
     // --- FUNGSI UPLOAD GAMBAR (ImgBB) ---
     async function uploadImageToHosting(file) {
-        if (!IMGBB_API_KEY || IMGBB_API_KEY === "37607665c0c9648289014785f66ca43b") {
+        // PERBAIKAN DI SINI: Hanya cek jika API Key Kosong
+        if (!IMGBB_API_KEY) {
             alert("ERROR: API Key ImgBB belum dimasukkan di dalam Script!");
             return null;
         }
@@ -262,13 +264,10 @@
     }
     
     function changeStok(id, amt) {
-        // Hanya update tampilan lokal, simpan manual nanti atau otomatis jika diinginkan
-        // Disini kita buat otomatis save biar aman
         const p = dbData.products.find(x => x.id === id);
         if(p) {
            p.stok = Math.max(0, p.stok + amt);
            renderProducts();
-           // Optional: debounce save
         }
     }
     
