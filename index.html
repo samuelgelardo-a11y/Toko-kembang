@@ -1,344 +1,106 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title id="pageTitle">Store Official</title>
-    <style>
-        :root {
-            --ios-bg: #F2F2F7;
-            --ios-card: #FFFFFF;
-            --ios-blue: #007AFF;
-            --ios-red: #FF3B30;
-            --ios-green: #34C759;
-            --ios-gray: #8E8E93;
-            --ios-orange: #FF9500;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body { 
-            margin: 0; 
-            background-color: var(--ios-bg); 
-            padding-bottom: env(safe-area-inset-bottom, 100px); 
-            overflow-x: hidden;
-        }
-
-        /* HEADER */
-        .header-top {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: calc(15px + env(safe-area-inset-top)) 20px 15px; 
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 0.5px solid #ccc;
-            position: sticky; top: 0; z-index: 100;
-        }
-
-        /* BANNER */
-        .banner-container {
-            width: 100%; height: 200px; 
-            background: #333 center/cover no-repeat; 
-            position: relative;
-            border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .btn-upload-banner {
-            position: absolute; bottom: 15px; right: 15px; 
-            background: rgba(255,255,255,0.9);
-            padding: 8px 15px; border-radius: 20px; 
-            font-size: 11px; font-weight: 600; cursor: pointer;
-        }
-
-        /* DESKRIPSI TOKO */
-        .store-description {
-            background: var(--ios-card); margin: 15px; padding: 18px; border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03); font-size: 13px; line-height: 1.6;
-            color: #333; white-space: pre-wrap;
-        }
-
-        /* CONTAINER */
-        .container { padding: 0 15px 15px 15px; }
-        .admin-only { display: none; }
-        .admin-panel { 
-            background: #fff; padding: 20px; border-radius: 20px; 
-            margin-bottom: 25px; border: 2px solid var(--ios-blue);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        /* GRID PRODUK */
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-        }
-        .product-card { 
-            background: var(--ios-card); border-radius: 20px; 
-            overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-            display: flex; flex-direction: column;
-            transition: transform 0.2s;
-        }
-        .product-card:active { transform: scale(0.97); }
-        .product-img { width: 100%; height: 150px; object-fit: cover; }
-        .product-info { padding: 12px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
-        .product-name { font-size: 14px; font-weight: 600; color: #1c1c1e; height: 34px; overflow: hidden; margin-bottom: 5px; }
-        .product-price { color: var(--ios-blue); font-weight: 800; font-size: 15px; margin: 5px 0; }
-        .stock-tag { font-size: 11px; color: var(--ios-gray); margin-bottom: 8px; }
-
-        /* BUTTONS */
-        button { cursor: pointer; transition: opacity 0.2s; }
-        button:active { opacity: 0.7; }
-        
-        .btn-buy-now { background: var(--ios-green); color: #fff; border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; margin-bottom: 6px; }
-        .btn-add-cart { background: var(--ios-bg); color: var(--ios-blue); border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; }
-        .btn-qty { background: #F2F2F7; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; font-size: 16px; }
-        .btn-edit { background: var(--ios-orange); color: white; border: none; width: 100%; padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-top: 10px; }
-        .btn-delete { background: #FFF0F0; color: var(--ios-red); border: none; width: 100%; padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-top: 5px; }
-
-        .out-of-stock { background: #eee; color: #888; padding: 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
-
-        input, textarea { 
-            width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; 
-            border: 1px solid #E5E5EA; background: #FAFAFA; font-size: 14px; 
-        }
-
-        /* FLOATING CART (BOTTOM BAR) */
-        .cart-float {
-            position: fixed; bottom: 20px; left: 15px; right: 15px;
-            background: var(--ios-green); color: white; padding: 18px;
-            border-radius: 20px; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 8px 25px rgba(52, 199, 89, 0.4);
-            z-index: 1000; display: none;
-            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
-
-        #bannerInput, #productImgInput { display: none; }
-    </style>
+<meta charset="UTF-8">
+<title>Petasan Store</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;background:#0f172a;color:white}
+header{padding:20px;text-align:center;font-size:22px;font-weight:bold;background:#020617}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;padding:15px}
+.card{background:#020617;border-radius:15px;overflow:hidden}
+.card img{width:100%;height:140px;object-fit:cover}
+.card div{padding:10px}
+.price{color:#22c55e;font-weight:bold}
+button{padding:10px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+.wa{background:#22c55e;width:100%;margin-top:8px}
+.admin{background:#2563eb;width:100%;margin-top:5px}
+#adminPanel{display:none;padding:15px}
+input{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px}
+</style>
 </head>
 <body>
 
-    <div class="header-top">
-        <h2 id="storeNameDisplay" style="margin:0; font-size:20px; font-weight: 800;">Sandro Store 🥟</h2>
-        <button onclick="toggleAdmin()" style="border:none; background:#F2F2F7; padding:8px; border-radius:50%; font-size:18px;" id="lockBtn">🔒</button>
-    </div>
+<header>🔥 PETASAN STORE 🔥</header>
 
-    <div class="banner-container" id="mainBanner">
-        <label for="bannerInput" class="btn-upload-banner admin-only">📸 Ganti Banner</label>
-        <input type="file" id="bannerInput" accept="image/*" onchange="uploadBanner(event)">
-    </div>
+<div id="adminPanel">
+  <h3>Tambah Produk</h3>
+  <input id="name" placeholder="Nama Produk">
+  <input id="price" placeholder="Harga">
+  <input type="file" id="img">
+  <button class="admin" onclick="addProduct()">SIMPAN PRODUK</button>
+</div>
 
-    <div class="store-description" id="descDisplay">Selamat datang! Silakan pilih produk kembang api terbaik kami.</div>
+<div class="grid" id="list"></div>
 
-    <div class="container">
-        <div class="admin-panel admin-only" id="adminPanel">
-            <h3 style="margin:0 0 15px 0; font-size:16px; color:var(--ios-blue)">🛠️ Dashboard Admin</h3>
-            
-            <label style="font-size: 12px; font-weight:600; color: var(--ios-gray);">Nama Toko:</label>
-            <input type="text" id="editStoreNameInput">
-            
-            <label style="font-size: 12px; font-weight:600; color: var(--ios-gray);">Deskripsi Toko:</label>
-            <textarea id="editDescInput" rows="3"></textarea>
-            
-            <button onclick="saveStoreInfo()" style="width:100%; padding:14px; background:var(--ios-blue); color:white; border:none; border-radius:12px; font-weight:700;">Simpan Profil Toko</button>
-
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-            
-            <h3 style="margin:0 0 15px 0; font-size:16px; color:var(--ios-blue)">📦 Tambah Produk</h3>
-            <input type="file" id="productImgInput" accept="image/*" onchange="previewImg(event)">
-            <label for="productImgInput" id="imgLbl" style="display:block; padding:20px; border:2px dashed #ddd; text-align:center; border-radius:15px; margin-bottom:12px; font-size:13px; color:#666;">🖼️ Upload Foto Produk</label>
-            <input type="text" id="pName" placeholder="Nama Produk">
-            <input type="number" id="pPrice" placeholder="Harga (Contoh: 50000)">
-            <input type="number" id="pStok" placeholder="Jumlah Stok">
-            <button onclick="addProduct()" style="width:100%; padding:14px; background:var(--ios-green); color:white; border:none; border-radius:12px; font-weight:700;">Publikasikan Produk</button>
-        </div>
-
-        <div class="product-grid" id="productDisplay"></div>
-    </div>
-
-    <div class="cart-float" id="cartBar" onclick="checkoutWA()">
-        <div style="display:flex; align-items:center;">
-            <span id="cartCount" style="font-weight:800; background:white; color:var(--ios-green); width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; margin-right:12px; font-size:14px;">0</span>
-            <span style="font-weight:700; font-size:15px;">Lihat Keranjang</span>
-        </div>
-        <div style="font-weight:800; font-size:15px;">Checkout ➔</div>
-    </div>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
 <script>
-    let isAdmin = false;
-    let products = JSON.parse(localStorage.getItem('sandro_prod_vfinal')) || [];
-    let cart = {}; 
-    let tempImg = "";
-    const MY_WA = "6281234567890"; // GANTI NOMOR WA DISINI
+/* ================= FIREBASE CONFIG ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyBTuwZPN__T7EUNiWpzwEe8Pngh_D-TrUw",
+  authDomain: "petasan-store.firebaseapp.com",
+  projectId: "petasan-store",
+  storageBucket: "petasan-store.firebasestorage.app",
+  messagingSenderId: "645579788794",
+  appId: "1:645579788794:web:67be3621646fdc61ea9443",
+  measurementId: "G-VK8JMWXM2Q"
+};
+firebase.initializeApp(firebaseConfig);
 
-    function toggleAdmin() {
-        let pass = prompt("Password Admin:");
-        if (pass === "martin123") {
-            isAdmin = !isAdmin;
-            document.getElementById('lockBtn').innerText = isAdmin ? "🔓" : "🔒";
-            document.getElementById('lockBtn').style.background = isAdmin ? "var(--ios-orange)" : "#F2F2F7";
-            document.getElementById('lockBtn').style.color = isAdmin ? "white" : "black";
-            updateAdminUI();
-            renderProducts();
-        } else if (pass !== null) { alert("Akses Ditolak!"); }
-    }
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-    function updateAdminUI() {
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
-        if (isAdmin) {
-            document.getElementById('editStoreNameInput').value = document.getElementById('storeNameDisplay').innerText;
-            document.getElementById('editDescInput').value = document.getElementById('descDisplay').innerText;
-        }
-    }
+/* ================= ADMIN LOGIN ================= */
+const pass = prompt("Masukkan Password Admin:");
+if(pass==="petasan123"){
+  document.getElementById("adminPanel").style.display="block";
+}
 
-    function saveStoreInfo() {
-        const newName = document.getElementById('editStoreNameInput').value;
-        const newDesc = document.getElementById('editDescInput').value;
-        if (!newName || !newDesc) return alert("Data tidak lengkap!");
+/* ================= LOAD PRODUK ================= */
+function load(){
+  db.collection("produk").onSnapshot(snap=>{
+    list.innerHTML="";
+    snap.forEach(doc=>{
+      const p=doc.data();
+      list.innerHTML+=`
+        <div class="card">
+          <img src="${p.img}">
+          <div>
+            <b>${p.name}</b>
+            <div class="price">Rp ${p.price}</div>
+            <button class="wa" onclick="wa('${p.name}')">Pesan WA</button>
+          </div>
+        </div>`;
+    })
+  })
+}
+load();
 
-        document.getElementById('storeNameDisplay').innerText = newName;
-        document.getElementById('descDisplay').innerText = newDesc;
-        document.getElementById('pageTitle').innerText = newName;
+/* ================= TAMBAH PRODUK ================= */
+function addProduct(){
+  const file=img.files[0];
+  const ref=storage.ref("produk/"+Date.now());
+  ref.put(file).then(()=>{
+    ref.getDownloadURL().then(url=>{
+      db.collection("produk").add({
+        name:name.value,
+        price:price.value,
+        img:url
+      })
+      alert("Produk tersimpan");
+    })
+  })
+}
 
-        localStorage.setItem('s_name_vfinal', newName);
-        localStorage.setItem('s_description_vfinal', newDesc);
-        alert("Profil Toko Berhasil Diubah!");
-    }
-
-    function uploadBanner(event) {
-        const r = new FileReader();
-        r.onload = () => { 
-            document.getElementById('mainBanner').style.backgroundImage = `url('${r.result}')`; 
-            localStorage.setItem('s_banner_vfinal', r.result); 
-        };
-        r.readAsDataURL(event.target.files[0]);
-    }
-
-    function previewImg(event) {
-        const r = new FileReader();
-        r.onload = () => { tempImg = r.result; document.getElementById('imgLbl').innerText = "✅ Gambar Siap"; document.getElementById('imgLbl').style.borderColor = "var(--ios-green)"; };
-        r.readAsDataURL(event.target.files[0]);
-    }
-
-    function addProduct() {
-        const name = document.getElementById('pName').value;
-        const price = document.getElementById('pPrice').value;
-        const stok = document.getElementById('pStok').value;
-        if (!tempImg || !name || !price || !stok) return alert("Mohon lengkapi semua data produk!");
-        
-        products.push({ id: Date.now(), name, price: parseInt(price), stok: parseInt(stok), img: tempImg });
-        saveData();
-        resetForm();
-        alert("Produk Berhasil Ditambahkan!");
-    }
-
-    function editProduct(id) {
-        const p = products.find(i => i.id === id);
-        const n = prompt("Nama Baru:", p.name);
-        const pr = prompt("Harga Baru:", p.price);
-        const s = prompt("Stok Baru:", p.stok);
-        if (n && pr && s) {
-            products = products.map(i => i.id === id ? {...i, name:n, price:parseInt(pr), stok:parseInt(s)} : i);
-            saveData();
-        }
-    }
-
-    function changeStok(id, amt) {
-        products = products.map(p => p.id === id ? { ...p, stok: Math.max(0, p.stok + amt) } : p);
-        saveData();
-    }
-
-    function deleteProduct(id) {
-        if (confirm("Hapus produk ini?")) { products = products.filter(p => p.id !== id); saveData(); }
-    }
-
-    function addToCart(id) {
-        const p = products.find(i => i.id === id);
-        if (p.stok <= 0) return;
-        cart[id] = (cart[id] || 0) + 1;
-        if (cart[id] > p.stok) { cart[id] = p.stok; alert("Stok Maksimal!"); }
-        updateCartUI();
-    }
-
-    function updateCartUI() {
-        let count = Object.values(cart).reduce((a, b) => a + b, 0);
-        document.getElementById('cartBar').style.display = count > 0 ? 'flex' : 'none';
-        document.getElementById('cartCount').innerText = count;
-    }
-
-    function checkoutWA() {
-        const store = document.getElementById('storeNameDisplay').innerText;
-        let msg = `Halo *${store}*, saya ingin memesan:\n\n`;
-        let total = 0;
-        for (const id in cart) {
-            const p = products.find(i => i.id == id);
-            const sub = p.price * cart[id];
-            total += sub;
-            msg += `▫️ *${p.name}*\n   ${cart[id]} x Rp ${p.price.toLocaleString()} = *Rp ${sub.toLocaleString()}*\n\n`;
-        }
-        msg += `💰 *Total Bayar: Rp ${total.toLocaleString()}*`;
-        window.open(`https://wa.me/${MY_WA}?text=${encodeURIComponent(msg)}`);
-        cart = {}; updateCartUI();
-    }
-
-    function buyNowWA(id) {
-        const p = products.find(i => i.id === id);
-        const store = document.getElementById('storeNameDisplay').innerText;
-        let msg = `Halo *${store}*, saya mau beli:\n\n▫️ *${p.name}* (1 pcs)\n💰 *Harga: Rp ${p.price.toLocaleString()}*`;
-        window.open(`https://wa.me/${MY_WA}?text=${encodeURIComponent(msg)}`);
-    }
-
-    function saveData() {
-        localStorage.setItem('sandro_prod_vfinal', JSON.stringify(products));
-        renderProducts();
-    }
-
-    function renderProducts() {
-        const container = document.getElementById('productDisplay');
-        container.innerHTML = products.length === 0 ? `<p style="grid-column:1/3; text-align:center; padding:50px; color:#888;">Belum ada produk tersedia.</p>` : 
-        products.map(p => `
-            <div class="product-card">
-                <img src="${p.img}" class="product-img">
-                <div class="product-info">
-                    <span class="product-name">${p.name}</span>
-                    <span class="product-price">Rp ${p.price.toLocaleString()}</span>
-                    <span class="stock-tag">Tersedia: ${p.stok}</span>
-                    ${isAdmin ? `
-                        <div style="display:flex; gap:5px; margin-bottom:5px;">
-                            <button class="btn-qty" style="flex:1" onclick="changeStok(${p.id},-1)">-</button>
-                            <button class="btn-qty" style="flex:1" onclick="changeStok(${p.id},1)">+</button>
-                        </div>
-                        <button class="btn-edit" onclick="editProduct(${p.id})">Edit Produk</button>
-                        <button class="btn-delete" onclick="deleteProduct(${p.id})">Hapus</button>
-                    ` : `
-                        ${p.stok <= 0 ? `<div class="out-of-stock">Habis Terjual</div>` : `
-                            <button class="btn-buy-now" onclick="buyNowWA(${p.id})">Beli Langsung</button>
-                            <button class="btn-add-cart" onclick="addToCart(${p.id})">+ Keranjang</button>
-                        `}
-                    `}
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function resetForm() {
-        document.getElementById('pName').value = ""; document.getElementById('pPrice').value = "";
-        document.getElementById('pStok').value = ""; document.getElementById('imgLbl').innerText = "🖼️ Upload Foto Produk";
-        tempImg = ""; document.getElementById('imgLbl').style.borderColor = "#ddd";
-    }
-
-    window.onload = () => {
-        renderProducts();
-        const n = localStorage.getItem('s_name_vfinal'); if (n) { document.getElementById('storeNameDisplay').innerText = n; document.getElementById('pageTitle').innerText = n; }
-        const b = localStorage.getItem('s_banner_vfinal'); if (b) document.getElementById('mainBanner').style.backgroundImage = `url('${b}')`;
-        const d = localStorage.getItem('s_description_vfinal'); if (d) document.getElementById('descDisplay').innerText = d;
-    };
+/* ================= WHATSAPP ================= */
+function wa(nama){
+  window.open(`https://wa.me/6281234567890?text=Halo saya mau pesan ${nama}`)
+}
 </script>
 
 </body>
-  </html>
+</html>
