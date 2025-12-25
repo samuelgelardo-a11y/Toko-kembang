@@ -1,46 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Petasan Store</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{margin:0;font-family:Arial;background:#0f172a;color:white}
-header{padding:20px;text-align:center;font-size:22px;font-weight:bold;background:#020617}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;padding:15px}
-.card{background:#020617;border-radius:15px;overflow:hidden}
-.card img{width:100%;height:140px;object-fit:cover}
-.card div{padding:10px}
-.price{color:#22c55e;font-weight:bold}
-button{padding:10px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
-.wa{background:#22c55e;width:100%;margin-top:8px}
-.admin{background:#2563eb;width:100%;margin-top:5px}
-#adminPanel{display:none;padding:15px}
-input{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gudang Petasan Online</title>
+    <style>
+        /* --- TAMPILAN (CSS) --- */
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #ef4444; --green: #22c55e; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 50px; }
+        
+        /* Header */
+        header { background: var(--card); padding: 20px; text-align: center; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
+        h1 { margin: 0; font-size: 1.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* Grid Produk */
+        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media(min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+        /* Kartu Produk */
+        .card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #334155; display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 150px; object-fit: cover; background: #000; }
+        .info { padding: 12px; flex: 1; display: flex; flex-direction: column; }
+        .name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; }
+        .price { color: var(--green); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
+        
+        /* Tombol */
+        button { width: 100%; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: auto; }
+        .btn-beli { background: var(--green); color: #000; }
+        .btn-beli:active { transform: scale(0.95); }
+        .btn-admin { background: var(--accent); color: white; margin-top: 20px; width: auto; padding: 10px 30px; }
+
+        /* Form Admin */
+        #admin-panel { display: none; background: #334155; padding: 20px; margin: 20px; border-radius: 10px; border: 1px solid var(--accent); }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; box-sizing: border-box; }
+        .loader { text-align: center; display: none; margin-top: 10px; font-style: italic; color: #cbd5e1; }
+    </style>
 </head>
 <body>
 
-<header>🔥 PETASAN STORE 🔥</header>
+    <header>
+        <h1>🔥 Raja Petasan 🔥</h1>
+        <small>Pusat Grosir & Eceran</small>
+    </header>
 
-<div id="adminPanel">
-  <h3>Tambah Produk</h3>
-  <input id="name" placeholder="Nama Produk">
-  <input id="price" placeholder="Harga">
-  <input type="file" id="img">
-  <button class="admin" onclick="addProduct()">SIMPAN PRODUK</button>
-</div>
+    <div style="text-align:center;">
+        <button class="btn-admin" onclick="bukaAdmin()">Login Admin</button>
+    </div>
 
-<div class="grid" id="list"></div>
+    <div id="admin-panel">
+        <h3 style="margin-top:0">Tambah Stok Baru</h3>
+        <input type="text" id="p-nama" placeholder="Nama Petasan (mis: Gasing 500)">
+        <input type="number" id="p-harga" placeholder="Harga (mis: 15000)">
+        <label style="display:block; margin-bottom:5px; font-size:12px;">Foto Produk:</label>
+        <input type="file" id="p-foto" accept="image/*">
+        <button class="btn-beli" onclick="uploadProduk()" id="btn-upload">UPLOAD BARANG</button>
+        <div class="loader" id="loader">Sedang mengupload foto... mohon tunggu...</div>
+    </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <div class="container">
+        <div class="grid" id="produk-list">
+            <p style="text-align:center; width:200%; margin-top:50px;">Memuat data...</p>
+        </div>
+    </div>
 
-<script>
-/* ================= FIREBASE CONFIG ================= */
-const firebaseConfig = {
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <script>
+        // --- 1. KONFIGURASI FIREBASE ---
+        // GANTI BAGIAN DI BAWAH INI DENGAN COPY-PASTE DARI FIREBASE CONSOLE ANDA
+        const firebaseConfig = {
   apiKey: "AIzaSyBTuwZPN__T7EUNiWpzwEe8Pngh_D-TrUw",
   authDomain: "petasan-store.firebaseapp.com",
   projectId: "petasan-store",
@@ -49,58 +80,95 @@ const firebaseConfig = {
   appId: "1:645579788794:web:67be3621646fdc61ea9443",
   measurementId: "G-VK8JMWXM2Q"
 };
-firebase.initializeApp(firebaseConfig);
+        // -------------------------------------------------------------------
 
-const db = firebase.firestore();
-const storage = firebase.storage();
+        // Inisialisasi
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
-/* ================= ADMIN LOGIN ================= */
-const pass = prompt("Masukkan Password Admin:");
-if(pass==="petasan123"){
-  document.getElementById("adminPanel").style.display="block";
-}
+        // --- 2. FITUR ADMIN (Upload) ---
+        function bukaAdmin() {
+            const pass = prompt("Masukkan Password Admin:");
+            // Password sederhana, ganti '1234' dengan keinginanmu
+            if(pass === "1234") {
+                document.getElementById('admin-panel').style.display = "block";
+                document.querySelector('.btn-admin').style.display = "none";
+            } else {
+                alert("Salah bos!");
+            }
+        }
 
-/* ================= LOAD PRODUK ================= */
-function load(){
-  db.collection("produk").onSnapshot(snap=>{
-    list.innerHTML="";
-    snap.forEach(doc=>{
-      const p=doc.data();
-      list.innerHTML+=`
-        <div class="card">
-          <img src="${p.img}">
-          <div>
-            <b>${p.name}</b>
-            <div class="price">Rp ${p.price}</div>
-            <button class="wa" onclick="wa('${p.name}')">Pesan WA</button>
-          </div>
-        </div>`;
-    })
-  })
-}
-load();
+        function uploadProduk() {
+            const nama = document.getElementById('p-nama').value;
+            const harga = document.getElementById('p-harga').value;
+            const foto = document.getElementById('p-foto').files[0];
+            const loader = document.getElementById('loader');
+            const btn = document.getElementById('btn-upload');
 
-/* ================= TAMBAH PRODUK ================= */
-function addProduct(){
-  const file=img.files[0];
-  const ref=storage.ref("produk/"+Date.now());
-  ref.put(file).then(()=>{
-    ref.getDownloadURL().then(url=>{
-      db.collection("produk").add({
-        name:name.value,
-        price:price.value,
-        img:url
-      })
-      alert("Produk tersimpan");
-    })
-  })
-}
+            if(!nama || !harga || !foto) return alert("Isi semua data dulu!");
 
-/* ================= WHATSAPP ================= */
-function wa(nama){
-  window.open(`https://wa.me/6281234567890?text=Halo saya mau pesan ${nama}`)
-}
-</script>
+            // Efek loading
+            loader.style.display = "block";
+            btn.style.display = "none";
 
+            // 1. Upload foto ke Storage
+            const storageRef = storage.ref('foto_petasan/' + new Date().getTime() + '-' + foto.name);
+            storageRef.put(foto).then(snapshot => {
+                return snapshot.ref.getDownloadURL();
+            }).then(url => {
+                // 2. Simpan data ke Database (Firestore)
+                db.collection("produk").add({
+                    nama: nama,
+                    harga: parseInt(harga),
+                    fotoUrl: url,
+                    waktu: firebase.firestore.FieldValue.serverTimestamp() // Agar urut
+                }).then(() => {
+                    alert("Berhasil disimpan!");
+                    location.reload(); // Refresh halaman
+                });
+            }).catch(error => {
+                alert("Gagal: " + error.message);
+                loader.style.display = "none";
+                btn.style.display = "block";
+            });
+        }
+
+        // --- 3. FITUR USER (Tampil Data) ---
+        const list = document.getElementById('produk-list');
+        
+        // Kode ini akan "mendengarkan" database secara live
+        db.collection("produk").orderBy("waktu", "desc").onSnapshot(snapshot => {
+            list.innerHTML = ""; // Bersihkan layar
+            if(snapshot.empty) {
+                list.innerHTML = "<p style='text-align:center; color:#aaa;'>Belum ada stok.</p>";
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                // Render HTML
+                list.innerHTML += `
+                    <div class="card">
+                        <img src="${data.fotoUrl}" loading="lazy">
+                        <div class="info">
+                            <div class="name">${data.nama}</div>
+                            <div class="price">Rp ${data.harga.toLocaleString()}</div>
+                            <button class="btn-beli" onclick="beliWA('${data.nama}', ${data.harga})">
+                                🛒 Pesan via WA
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+
+        function beliWA(barang, harga) {
+            // GANTI NOMOR WA DI SINI (Gunakan format 628...)
+            const nomorWA = "6281234567890"; 
+            const pesan = `Halo gan, saya mau beli *${barang}* seharga Rp ${harga.toLocaleString()}. Masih ada?`;
+            window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
+        }
+    </script>
 </body>
 </html>
