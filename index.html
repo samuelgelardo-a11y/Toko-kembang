@@ -3,173 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gudang Petasan Online</title>
+    <title>Jual Petasan - Admin HP</title>
     <style>
-        /* --- TAMPILAN (CSS) --- */
-        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #ef4444; --green: #22c55e; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 50px; }
+        /* TAMPILAN (Sama seperti sebelumnya) */
+        :root { --merah: #d32f2f; --hitam: #212121; }
+        body { font-family: sans-serif; margin: 0; background: #f4f4f4; padding-bottom: 60px; }
+        nav { background: var(--hitam); color: white; padding: 15px; display: flex; justify-content: space-between; position: sticky; top:0; z-index:99; }
         
-        /* Header */
-        header { background: var(--card); padding: 20px; text-align: center; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
-        h1 { margin: 0; font-size: 1.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+        .container { max-width: 800px; margin: auto; padding: 10px; }
         
-        /* Grid Produk */
-        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        @media(min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-
         /* Kartu Produk */
-        .card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #334155; display: flex; flex-direction: column; }
-        .card img { width: 100%; height: 150px; object-fit: cover; background: #000; }
-        .info { padding: 12px; flex: 1; display: flex; flex-direction: column; }
-        .name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; }
-        .price { color: var(--green); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
+        .card { background: white; margin-bottom: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 200px; object-fit: cover; background: #ddd; }
+        .card-body { padding: 15px; }
+        .judul { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; }
+        .harga { color: var(--merah); font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
+        .desc { font-size: 0.9rem; color: #555; margin-bottom: 15px; }
         
         /* Tombol */
-        button { width: 100%; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: auto; }
-        .btn-beli { background: var(--green); color: #000; }
-        .btn-beli:active { transform: scale(0.95); }
-        .btn-admin { background: var(--accent); color: white; margin-top: 20px; width: auto; padding: 10px 30px; }
-
-        /* Form Admin */
-        #admin-panel { display: none; background: #334155; padding: 20px; margin: 20px; border-radius: 10px; border: 1px solid var(--accent); }
-        input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; box-sizing: border-box; }
-        .loader { text-align: center; display: none; margin-top: 10px; font-style: italic; color: #cbd5e1; }
+        .btn { border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+        .btn-beli { background: #25D366; color: white; text-decoration: none; display: block; text-align: center; }
+        .btn-login { background: #ffc107; width: auto; font-size: 0.8rem; }
+        .btn-admin { background: var(--hitam); color: white; }
+        
+        /* Admin Tools */
+        .admin-tools { display: flex; gap: 5px; margin-bottom: 10px; }
+        .btn-edit { background: #2196F3; color: white; flex: 1; }
+        .btn-hapus { background: var(--merah); color: white; flex: 1; }
+        
+        /* Form Input */
+        #formPanel { display: none; background: white; padding: 20px; border-top: 5px solid var(--merah); margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🔥 Raja Petasan 🔥</h1>
-        <small>Pusat Grosir & Eceran</small>
-    </header>
-
-    <div style="text-align:center;">
-        <button class="btn-admin" onclick="bukaAdmin()">Login Admin</button>
-    </div>
-
-    <div id="admin-panel">
-        <h3 style="margin-top:0">Tambah Stok Baru</h3>
-        <input type="text" id="p-nama" placeholder="Nama Petasan (mis: Gasing 500)">
-        <input type="number" id="p-harga" placeholder="Harga (mis: 15000)">
-        <label style="display:block; margin-bottom:5px; font-size:12px;">Foto Produk:</label>
-        <input type="file" id="p-foto" accept="image/*">
-        <button class="btn-beli" onclick="uploadProduk()" id="btn-upload">UPLOAD BARANG</button>
-        <div class="loader" id="loader">Sedang mengupload foto... mohon tunggu...</div>
-    </div>
+    <nav>
+        <h3>💥 Petasan Online</h3>
+        <button class="btn btn-login" id="loginBtn" onclick="toggleLogin()">Login Admin</button>
+    </nav>
 
     <div class="container">
-        <div class="grid" id="produk-list">
-            <p style="text-align:center; width:200%; margin-top:50px;">Memuat data...</p>
+        
+        <div id="formPanel">
+            <h3 id="formTitle">Tambah Produk</h3>
+            <input type="hidden" id="pId"> <label>Nama Produk</label>
+            <input type="text" id="pNama">
+            
+            <label>Link Foto (URL)</label>
+            <input type="text" id="pImg" placeholder="https://...">
+            
+            <label>Deskripsi</label>
+            <textarea id="pDesc" rows="3"></textarea>
+            
+            <label>Harga (Rp)</label>
+            <input type="number" id="pHarga">
+            
+            <button class="btn btn-admin" onclick="simpanKeSheetDB()">SIMPAN DATA</button>
+            <button class="btn" onclick="resetForm()" style="background:#ddd;">BATAL</button>
         </div>
+
+        <p id="status" style="text-align:center; color:grey;">Memuat data...</p>
+        <div id="listProduk"></div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-
     <script>
-        // --- 1. KONFIGURASI FIREBASE ---
-        // GANTI BAGIAN DI BAWAH INI DENGAN COPY-PASTE DARI FIREBASE CONSOLE ANDA
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBrspAFlc0Oiq-Rldi9iz4WpvvMMBP6U90",
-  authDomain: "raja-petasan.firebaseapp.com",
-  projectId: "raja-petasan",
-  storageBucket: "raja-petasan.firebasestorage.app",
-  messagingSenderId: "113925546318",
-  appId: "1:113925546318:web:5c0a7e5589bf0d65ebfe1f",
-  measurementId: "G-P0NK3DWHVW"
-};
-        // -------------------------------------------------------------------
+        // ============================================
+        // PASTE LINK SHEETDB ANDA DI BAWAH INI:
+        // ============================================
+        const API_URL = "LINK_SHEETDB_ANDA_DISINI"; 
 
-        // Inisialisasi
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
+        let isAdmin = false;
 
-        // --- 2. FITUR ADMIN (Upload) ---
-        function bukaAdmin() {
-            const pass = prompt("Masukkan Password Admin:");
-            // Password sederhana, ganti '1234' dengan keinginanmu
-            if(pass === "1234") {
-                document.getElementById('admin-panel').style.display = "block";
-                document.querySelector('.btn-admin').style.display = "none";
-            } else {
-                alert("Salah bos!");
-            }
+        // 1. BACA DATA (GET)
+        function loadData() {
+            document.getElementById('status').innerText = "Sedang mengambil data...";
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    render(data);
+                    document.getElementById('status').innerText = "";
+                })
+                .catch(err => document.getElementById('status').innerText = "Gagal koneksi.");
         }
 
-        function uploadProduk() {
-            const nama = document.getElementById('p-nama').value;
-            const harga = document.getElementById('p-harga').value;
-            const foto = document.getElementById('p-foto').files[0];
-            const loader = document.getElementById('loader');
-            const btn = document.getElementById('btn-upload');
+        // 2. TAMPILKAN KE LAYAR
+        function render(data) {
+            const list = document.getElementById('listProduk');
+            list.innerHTML = '';
+            
+            data.forEach(p => {
+                let adminHtml = '';
+                if(isAdmin){
+                    adminHtml = `
+                    <div class="admin-tools">
+                        <button class="btn btn-edit" onclick="editMode('${p.id}', '${p.nama}', '${p.gambar}', '${p.desc}', '${p.harga}')">Edit</button>
+                        <button class="btn btn-hapus" onclick="hapusData('${p.id}')">Hapus</button>
+                    </div>`;
+                }
 
-            if(!nama || !harga || !foto) return alert("Isi semua data dulu!");
+                const rupiah = Number(p.harga).toLocaleString('id-ID');
 
-            // Efek loading
-            loader.style.display = "block";
-            btn.style.display = "none";
-
-            // 1. Upload foto ke Storage
-            const storageRef = storage.ref('foto_petasan/' + new Date().getTime() + '-' + foto.name);
-            storageRef.put(foto).then(snapshot => {
-                return snapshot.ref.getDownloadURL();
-            }).then(url => {
-                // 2. Simpan data ke Database (Firestore)
-                db.collection("produk").add({
-                    nama: nama,
-                    harga: parseInt(harga),
-                    fotoUrl: url,
-                    waktu: firebase.firestore.FieldValue.serverTimestamp() // Agar urut
-                }).then(() => {
-                    alert("Berhasil disimpan!");
-                    location.reload(); // Refresh halaman
-                });
-            }).catch(error => {
-                alert("Gagal: " + error.message);
-                loader.style.display = "none";
-                btn.style.display = "block";
-            });
-        }
-
-        // --- 3. FITUR USER (Tampil Data) ---
-        const list = document.getElementById('produk-list');
-        
-        // Kode ini akan "mendengarkan" database secara live
-        db.collection("produk").orderBy("waktu", "desc").onSnapshot(snapshot => {
-            list.innerHTML = ""; // Bersihkan layar
-            if(snapshot.empty) {
-                list.innerHTML = "<p style='text-align:center; color:#aaa;'>Belum ada stok.</p>";
-                return;
-            }
-
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                // Render HTML
                 list.innerHTML += `
-                    <div class="card">
-                        <img src="${data.fotoUrl}" loading="lazy">
-                        <div class="info">
-                            <div class="name">${data.nama}</div>
-                            <div class="price">Rp ${data.harga.toLocaleString()}</div>
-                            <button class="btn-beli" onclick="beliWA('${data.nama}', ${data.harga})">
-                                🛒 Pesan via WA
-                            </button>
-                        </div>
+                <div class="card">
+                    <img src="${p.gambar}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                    <div class="card-body">
+                        <div class="judul">${p.nama}</div>
+                        <div class="desc">${p.desc}</div>
+                        <div class="harga">Rp ${rupiah}</div>
+                        ${adminHtml}
+                        <a href="https://wa.me/628123456789?text=Order ${p.nama}" class="btn btn-beli">Beli via WA</a>
                     </div>
-                `;
+                </div>`;
             });
-        });
-
-        function beliWA(barang, harga) {
-            // GANTI NOMOR WA DI SINI (Gunakan format 628...)
-            const nomorWA = "6281234567890"; 
-            const pesan = `Halo gan, saya mau beli *${barang}* seharga Rp ${harga.toLocaleString()}. Masih ada?`;
-            window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`);
         }
+
+        // 3. SIMPAN DATA (POST / PUT)
+        function simpanKeSheetDB() {
+            const id = document.getElementById('pId').value;
+            const nama = document.getElementById('pNama').value;
+            const img = document.getElementById('pImg').value;
+            const desc = document.getElementById('pDesc').value;
+            const harga = document.getElementById('pHarga').value;
+
+            if(!nama || !harga) return alert("Isi Nama dan Harga!");
+
+            document.getElementById('status').innerText = "Menyimpan...";
+            
+            const dataKirim = {
+                data: { // Format wajib SheetDB
+                    nama: nama,
+                    gambar: img,
+                    desc: desc,
+                    harga: harga
+                }
+            };
+
+            if(id) {
+                // --- UPDATE (EDIT) ---
+                // Menggunakan endpoint /id/{value}
+                fetch(`${API_URL}/id/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataKirim)
+                }).then(() => {
+                    resetForm();
+                    loadData();
+                });
+            } else {
+                // --- CREATE (BARU) ---
+                // Generate ID unik pakai waktu sekarang
+                dataKirim.data.id = Date.now(); 
+                
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataKirim)
+                }).then(() => {
+                    resetForm();
+                    loadData();
+                });
+            }
+        }
+
+        // 4. HAPUS DATA (DELETE)
+        function hapusData(id) {
+            if(confirm("Hapus produk ini?")) {
+                document.getElementById('status').innerText = "Menghapus...";
+                fetch(`${API_URL}/id/${id}`, {
+                    method: 'DELETE'
+                }).then(() => loadData());
+            }
+        }
+
+        // --- UI & LOGIN ---
+        function toggleLogin() {
+            if(!isAdmin) {
+                const pass = prompt("Password Admin:");
+                if(pass === "admin123") {
+                    isAdmin = true;
+                    document.getElementById('loginBtn').innerText = "Logout";
+                    document.getElementById('loginBtn').style.background = "#d32f2f";
+                    document.getElementById('loginBtn').style.color = "white";
+                    document.getElementById('formPanel').style.display = "block";
+                    loadData(); // Reload biar tombol muncul
+                }
+            } else {
+                isAdmin = false;
+                document.getElementById('loginBtn').innerText = "Login Admin";
+                document.getElementById('loginBtn').style.background = "#ffc107";
+                document.getElementById('loginBtn').style.color = "black";
+                document.getElementById('formPanel').style.display = "none";
+                loadData();
+            }
+        }
+
+        function editMode(id, nama, img, desc, harga) {
+            document.getElementById('pId').value = id;
+            document.getElementById('pNama').value = nama;
+            document.getElementById('pImg').value = img;
+            document.getElementById('pDesc').value = desc;
+            document.getElementById('pHarga').value = harga;
+            document.getElementById('formTitle').innerText = "Edit Produk";
+            document.getElementById('formPanel').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function resetForm() {
+            document.getElementById('pId').value = '';
+            document.getElementById('pNama').value = '';
+            document.getElementById('pImg').value = '';
+            document.getElementById('pDesc').value = '';
+            document.getElementById('pHarga').value = '';
+            document.getElementById('formTitle').innerText = "Tambah Produk";
+        }
+
+        // Jalankan awal
+        loadData();
     </script>
 </body>
 </html>
