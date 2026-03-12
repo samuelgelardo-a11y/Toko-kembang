@@ -1,358 +1,80 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Petasan Jaya</title>
-
-<style>
-:root{
---bg:#F2F2F7;
---card:#fff;
---blue:#007AFF;
---green:#34C759;
---red:#FF3B30;
---gray:#8E8E93;
-}
-
-*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
-body{
-margin:0;
-background:black;
-display:flex;
-justify-content:center;
-}
-
-/* ====== PHONE FRAME ====== */
-.phone{
-width:390px;
-min-height:100vh;
-background:var(--bg);
-border-radius:28px;
-overflow:hidden;
-position:relative;
-}
-
-/* STATUS BAR */
-.status{
-height:28px;
-padding:6px 12px;
-display:flex;
-justify-content:space-between;
-font-size:12px;
-font-weight:600;
-background:#fff;
-}
-
-/* HEADER */
-.header{
-background:#fff;
-padding:12px 15px;
-display:flex;
-align-items:center;
-gap:10px;
-border-bottom:1px solid #eee;
-}
-.header img{
-width:36px;height:36px;
-border-radius:10px;
-object-fit:cover;
-display:none;
-}
-.header h3{
-margin:0;font-size:18px;font-weight:800;
-}
-
-/* BANNER */
-.banner{
-height:180px;
-background:#333;
-}
-.banner img{
-width:100%;height:100%;
-object-fit:cover;
-display:none;
-}
-
-/* STORE DESC */
-.store-desc{
-background:#fff;
-margin:12px;
-padding:15px;
-border-radius:20px;
-font-size:14px;
-line-height:1.5;
-}
-
-/* ADMIN */
-.admin{
-background:#fff;
-margin:12px;
-padding:15px;
-border-radius:20px;
-}
-.admin-only{display:none}
-input,textarea,select{
-width:100%;
-padding:12px;
-margin-bottom:10px;
-border-radius:12px;
-border:1px solid #ddd;
-font-size:14px;
-}
-
-/* PRODUCT GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:12px;
-}
-.card{
-background:#fff;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,.06);
-}
-.card img{
-width:100%;
-height:140px;
-object-fit:cover;
-background:#eee;
-}
-.info{
-padding:10px;
-text-align:center;
-}
-.name{font-weight:700;font-size:14px}
-.desc{
-font-size:12px;
-color:#666;
-height:32px;
-overflow:hidden;
-}
-.price{
-color:var(--blue);
-font-weight:800;
-margin-top:4px;
-}
-.stock,.cat{
-font-size:12px;
-color:var(--gray);
-}
-
-/* BUTTON */
-button{
-border:none;
-border-radius:12px;
-padding:10px;
-font-weight:700;
-width:100%;
-}
-.buy{background:var(--green);color:#fff;margin-top:6px}
-.cart{background:#f2f2f7;color:var(--blue);margin-top:6px}
-
-/* CART BAR */
-#cartBar{
-position:fixed;
-bottom:20px;
-width:360px;
-background:var(--green);
-color:#fff;
-padding:14px;
-border-radius:20px;
-display:none;
-justify-content:space-between;
-font-weight:800;
-}
-</style>
+    <title>Latihan 3 - Kalkulator Sederhana</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        .label-merah { color: #c00000; font-weight: bold; margin-bottom: 5px; display: block; }
+        .form-group { display: inline-block; vertical-align: bottom; margin: 0 5px; }
+        input, select { padding: 5px; }
+    </style>
 </head>
-
 <body>
 
-<div class="phone">
+    <form method="POST" action="">
+        <div class="form-group">
+            <span class="label-merah">Nilai I</span>
+            <input type="number" name="nilai1" step="any" required style="width: 100px;">
+        </div>
 
-<!-- STATUS BAR -->
-<div class="status">
-<span>09:41</span>
-<span>📶 🔋</span>
-</div>
+        <div class="form-group">
+            <select name="operator">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+        </div>
 
-<!-- HEADER -->
-<div class="header">
-<img id="logoImg">
-<h3 id="storeName">Petasan Jaya 🎆</h3>
-<button onclick="loginAdmin()" style="margin-left:auto">🔒</button>
-</div>
+        <div class="form-group">
+            <span class="label-merah">Nilai II</span>
+            <input type="number" name="nilai2" step="any" required style="width: 100px;">
+        </div>
 
-<!-- BANNER -->
-<div class="banner">
-<img id="bannerImg">
-</div>
+        <div class="form-group">
+            <input type="submit" name="hitung" value="submit">
+        </div>
+    </form>
 
-<!-- DESKRIPSI -->
-<div class="store-desc" id="storeDesc">
-Menjual petasan & kembang api berkualitas, aman & terpercaya.
-</div>
+    <br><br>
 
-<!-- ADMIN -->
-<div class="admin admin-only">
-<h3>🛠️ Admin Toko</h3>
+    <?php
+    // Mengecek apakah tombol 'submit' (dengan name="hitung") sudah ditekan
+    if(isset($_POST['hitung'])) {
+        
+        // Mengambil data dari form
+        $nilai1 = $_POST['nilai1'];
+        $nilai2 = $_POST['nilai2'];
+        $operator = $_POST['operator'];
+        $hasil = 0;
 
-<input id="storeNameInput" placeholder="Nama Toko">
-<textarea id="storeDescInput" placeholder="Deskripsi toko"></textarea>
+        // Melakukan perhitungan berdasarkan operator yang dipilih
+        switch ($operator) {
+            case '+':
+                $hasil = $nilai1 + $nilai2;
+                break;
+            case '-':
+                $hasil = $nilai1 - $nilai2;
+                break;
+            case '*':
+                $hasil = $nilai1 * $nilai2;
+                break;
+            case '/':
+                // Mencegah error jika angka dibagi dengan 0
+                if ($nilai2 != 0) {
+                    $hasil = $nilai1 / $nilai2;
+                } else {
+                    $hasil = "Error (Tidak bisa dibagi 0)";
+                }
+                break;
+        }
 
-<label>Logo</label>
-<input type="file" accept="image/*" onchange="uploadLogo(event)">
-<label>Banner</label>
-<input type="file" accept="image/*" onchange="uploadBanner(event)">
-
-<button onclick="saveStore()" style="background:var(--blue);color:#fff">
-Simpan Profil
-</button>
-
-<hr>
-
-<input id="pName" placeholder="Nama Produk">
-<textarea id="pDesc" placeholder="Deskripsi Produk"></textarea>
-<input id="pPrice" type="number" placeholder="Harga">
-<input id="pStock" type="number" placeholder="Stok">
-
-<select id="pCat">
-<option value="">Kategori</option>
-<option>Petasan Banting</option>
-<option>Petasan Renteng</option>
-<option>Petasan Roket</option>
-<option>Kembang Api</option>
-</select>
-
-<input type="file" id="pImg" accept="image/*">
-
-<button onclick="addProduct()" style="background:var(--green);color:#fff">
-Tambah Produk
-</button>
-</div>
-
-<!-- PRODUK -->
-<div class="grid" id="list"></div>
-
-</div>
-
-<!-- CART -->
-<div id="cartBar" onclick="checkoutWA()">
-<span id="cartText">🧾 0 Item</span>
-<span>Checkout ➜</span>
-</div>
-
-<script>
-const KEY="PETASAN_MOBILE";
-const WA="6281234567890";
-const ADMIN_PASS="petasan123";
-
-let db={
-store:{name:"Petasan Jaya 🎆",desc:"Menjual petasan & kembang api berkualitas, aman & terpercaya.",logo:"",banner:""},
-products:[]
-};
-let admin=false,cart={};
-
-function load(){
-const d=localStorage.getItem(KEY);
-if(d) db=JSON.parse(d);
-applyStore();render();
-}
-function save(){localStorage.setItem(KEY,JSON.stringify(db));}
-
-function loginAdmin(){
-if(prompt("Password Admin")!==ADMIN_PASS) return alert("Salah");
-admin=!admin;
-document.querySelectorAll(".admin-only")
-.forEach(e=>e.style.display=admin?"block":"none");
-storeNameInput.value=db.store.name;
-storeDescInput.value=db.store.desc;
-}
-
-function applyStore(){
-storeName.innerText=db.store.name;
-storeDesc.innerText=db.store.desc;
-if(db.store.logo){logoImg.src=db.store.logo;logoImg.style.display="block";}
-if(db.store.banner){bannerImg.src=db.store.banner;bannerImg.style.display="block";}
-}
-
-function saveStore(){
-db.store.name=storeNameInput.value;
-db.store.desc=storeDescInput.value;
-save();applyStore();
-}
-
-function uploadLogo(e){
-const r=new FileReader();
-r.onload=()=>{db.store.logo=r.result;save();applyStore()}
-r.readAsDataURL(e.target.files[0]);
-}
-function uploadBanner(e){
-const r=new FileReader();
-r.onload=()=>{db.store.banner=r.result;save();applyStore()}
-r.readAsDataURL(e.target.files[0]);
-}
-
-function addProduct(){
-const r=new FileReader();
-r.onload=()=>{
-db.products.push({
-id:Date.now(),
-name:pName.value,
-desc:pDesc.value,
-price:+pPrice.value,
-stock:+pStock.value,
-cat:pCat.value,
-img:r.result
-});
-save();render();
-};
-r.readAsDataURL(pImg.files[0]);
-}
-
-function addCart(id){
-cart[id]=(cart[id]||0)+1;
-updateCart();
-}
-function updateCart(){
-let t=Object.values(cart).reduce((a,b)=>a+b,0);
-cartBar.style.display=t?"flex":"none";
-cartText.innerText=`🧾 ${t} Item`;
-}
-
-function checkoutWA(){
-let msg="Halo saya pesan:\n",total=0;
-for(let id in cart){
-let p=db.products.find(x=>x.id==id);
-let sub=p.price*cart[id];
-total+=sub;
-msg+=`- ${p.name} (${cart[id]}x) Rp ${sub.toLocaleString()}\n`;
-}
-msg+=`\nTotal: Rp ${total.toLocaleString()}`;
-open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`);
-}
-
-function render(){
-list.innerHTML=db.products.map(p=>`
-<div class="card">
-<img src="${p.img}">
-<div class="info">
-<div class="name">${p.name}</div>
-<div class="desc">${p.desc}</div>
-<div class="cat">${p.cat}</div>
-<div class="price">Rp ${p.price.toLocaleString()}</div>
-<div class="stock">Stok: ${p.stock}</div>
-<button class="buy" onclick="checkoutWA()">Beli</button>
-<button class="cart" onclick="addCart(${p.id})">+ Keranjang</button>
-</div>
-</div>`).join("");
-}
-
-window.onload=load;
-</script>
+        // Menampilkan Hasil di bawah form
+        echo "<hr style='width: 50%;'>";
+        echo "<h3>Hasil Perhitungan:</h3>";
+        echo "<p style='font-size: 18pt;'>$nilai1 $operator $nilai2 = <b>$hasil</b></p>";
+    }
+    ?>
 
 </body>
 </html>
