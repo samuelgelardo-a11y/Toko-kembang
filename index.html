@@ -6,19 +6,19 @@
         body { font-family: sans-serif; text-align: center; margin-top: 50px; }
         .label-merah { color: #c00000; font-weight: bold; margin-bottom: 5px; display: block; }
         .form-group { display: inline-block; vertical-align: bottom; margin: 0 5px; }
-        input, select { padding: 5px; }
+        input, select, button { padding: 5px; }
     </style>
 </head>
 <body>
 
-    <form method="POST" action="">
+    <div>
         <div class="form-group">
             <span class="label-merah">Nilai I</span>
-            <input type="number" name="nilai1" step="any" required style="width: 100px;">
+            <input type="number" id="nilai1" step="any" required style="width: 100px;">
         </div>
 
         <div class="form-group">
-            <select name="operator">
+            <select id="operator">
                 <option value="+">+</option>
                 <option value="-">-</option>
                 <option value="*">*</option>
@@ -28,53 +28,60 @@
 
         <div class="form-group">
             <span class="label-merah">Nilai II</span>
-            <input type="number" name="nilai2" step="any" required style="width: 100px;">
+            <input type="number" id="nilai2" step="any" required style="width: 100px;">
         </div>
 
         <div class="form-group">
-            <input type="submit" name="hitung" value="submit">
+            <button onclick="hitungHasil()">submit</button>
         </div>
-    </form>
+    </div>
 
     <br><br>
 
-    <?php
-    // Mengecek apakah tombol 'submit' (dengan name="hitung") sudah ditekan
-    if(isset($_POST['hitung'])) {
-        
-        // Mengambil data dari form
-        $nilai1 = $_POST['nilai1'];
-        $nilai2 = $_POST['nilai2'];
-        $operator = $_POST['operator'];
-        $hasil = 0;
+    <div id="tempat-hasil"></div>
 
-        // Melakukan perhitungan berdasarkan operator yang dipilih
-        switch ($operator) {
-            case '+':
-                $hasil = $nilai1 + $nilai2;
-                break;
-            case '-':
-                $hasil = $nilai1 - $nilai2;
-                break;
-            case '*':
-                $hasil = $nilai1 * $nilai2;
-                break;
-            case '/':
-                // Mencegah error jika angka dibagi dengan 0
-                if ($nilai2 != 0) {
-                    $hasil = $nilai1 / $nilai2;
-                } else {
-                    $hasil = "Error (Tidak bisa dibagi 0)";
-                }
-                break;
+    <script>
+        function hitungHasil() {
+            // Mengambil angka dari input form
+            let val1 = parseFloat(document.getElementById('nilai1').value);
+            let val2 = parseFloat(document.getElementById('nilai2').value);
+            let op = document.getElementById('operator').value;
+            let hasil = 0;
+
+            // Validasi jika form kosong
+            if (isNaN(val1) || isNaN(val2)) {
+                alert("Harap masukkan angka di kedua kolom!");
+                return;
+            }
+
+            // Melakukan perhitungan
+            switch (op) {
+                case '+':
+                    hasil = val1 + val2;
+                    break;
+                case '-':
+                    hasil = val1 - val2;
+                    break;
+                case '*':
+                    hasil = val1 * val2;
+                    break;
+                case '/':
+                    if (val2 !== 0) {
+                        hasil = val1 / val2;
+                    } else {
+                        hasil = "Error (Tidak bisa dibagi 0)";
+                    }
+                    break;
+            }
+
+            // Menampilkan hasil ke layar
+            let tampilanHasil = "<hr style='width: 50%;'>" +
+                                "<h3>Hasil Perhitungan:</h3>" +
+                                "<p style='font-size: 18pt;'>" + val1 + " " + op + " " + val2 + " = <b>" + hasil + "</b></p>";
+            
+            document.getElementById('tempat-hasil').innerHTML = tampilanHasil;
         }
-
-        // Menampilkan Hasil di bawah form
-        echo "<hr style='width: 50%;'>";
-        echo "<h3>Hasil Perhitungan:</h3>";
-        echo "<p style='font-size: 18pt;'>$nilai1 $operator $nilai2 = <b>$hasil</b></p>";
-    }
-    ?>
+    </script>
 
 </body>
 </html>
