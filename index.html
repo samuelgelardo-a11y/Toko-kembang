@@ -1,85 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Latihan 3 - Kalkulator Sederhana</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-        .label-merah { color: #c00000; font-weight: bold; margin-bottom: 5px; display: block; }
-        .form-group { display: inline-block; vertical-align: bottom; margin: 0 5px; }
-        input, select, button { padding: 5px; }
-    </style>
+<title>Daftar Peralatan Yang Dibeli</title>
+<style type="text/css">
+    body { font-size: 14pt; }
+    table { font-size: 25pt; }
+</style>
 </head>
 <body>
+<center>
+    <font face="comic sans serif" size="5" color="blue">Contoh Perhitungan Peralatan (Versi GitHub)</font>
+    <div id="tempat-tabel"></div>
+</center>
 
-    <div class="form-group">
-        <span class="label-merah">Nilai I</span>
-        <input type="number" id="nilai1" step="any" required style="width: 100px;">
-    </div>
+<script>
+    // Inisiasi variable
+    let brg1 = "Buku", brg2 = "Mouse", brg3 = "FlashDisk", brg4 = "Pulpen";
+    let harga1 = 17500, harga2 = 30000, harga3 = 70000, harga4 = 22300;
+    let jmlbrg1 = 2, jmlbrg2 = 5, jmlbrg3 = 1, jmlbrg4 = 3;
 
-    <div class="form-group">
-        <select id="operator">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-        </select>
-    </div>
+    // Total harga per jenis
+    let th1 = jmlbrg1 * harga1;
+    let th2 = jmlbrg2 * harga2;
+    let th3 = jmlbrg3 * harga3;
+    let th4 = jmlbrg4 * harga4;
 
-    <div class="form-group">
-        <span class="label-merah">Nilai II</span>
-        <input type="number" id="nilai2" step="any" required style="width: 100px;">
-    </div>
+    // Grand total dan Diskon
+    let tharga = th1 + th2 + th3 + th4;
+    let diskon = 5;
+    let tdiskon = (diskon * tharga) / 100;
+    let tdibayar = tharga - tdiskon;
 
-    <div class="form-group">
-        <button type="button" onclick="hitungHasil()">submit</button>
-    </div>
+    // Membuat tabel HTML dan memasukkan hasil hitungan
+    let tabelHTML = `
+    <table border="1" cellspacing="0" cellpadding="3">
+        <tr>
+            <td colspan="4" align="center" valign="middle"><b>Daftar Pemesanan Peralatan Kantor</b></td>
+        </tr>
+        <tr>
+            <td><b>Nama Peralatan</b></td><td><b>Jumlah</b></td><td><b>Harga Satuan</b></td><td><b>Jumlah Harga</b></td>
+        </tr>
+        <tr>
+            <td align="left">${brg1}</td><td align="right">${jmlbrg1}</td><td align="right">${harga1}</td><td align="right">${th1}</td>
+        </tr>
+        <tr>
+            <td align="left">${brg2}</td><td align="right">${jmlbrg2}</td><td align="right">${harga2}</td><td align="right">${th2}</td>
+        </tr>
+        <tr>
+            <td align="left">${brg3}</td><td align="right">${jmlbrg3}</td><td align="right">${harga3}</td><td align="right">${th3}</td>
+        </tr>
+        <tr>
+            <td align="left">${brg4}</td><td align="right">${jmlbrg4}</td><td align="right">${harga4}</td><td align="right">${th4}</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="right">Total Harga</td><td align="right">${tharga}</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="right">Diskon ( ${diskon} % )</td><td align="right">${tdiskon}</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="right">Jumlah harus dibayar</td><td align="right">${tdibayar}</td>
+        </tr>
+    </table>
+    `;
 
-    <br><br>
-
-    <div id="tempat-hasil"></div>
-
-    <script>
-        function hitungHasil() {
-            // Mengambil angka dari input
-            let val1 = parseFloat(document.getElementById('nilai1').value);
-            let val2 = parseFloat(document.getElementById('nilai2').value);
-            let op = document.getElementById('operator').value;
-            let hasil = 0;
-
-            // Validasi jika kolom kosong
-            if (isNaN(val1) || isNaN(val2)) {
-                alert("Harap masukkan angka di kedua kolom!");
-                return;
-            }
-
-            // Melakukan perhitungan
-            switch (op) {
-                case '+':
-                    hasil = val1 + val2;
-                    break;
-                case '-':
-                    hasil = val1 - val2;
-                    break;
-                case '*':
-                    hasil = val1 * val2;
-                    break;
-                case '/':
-                    if (val2 !== 0) {
-                        hasil = val1 / val2;
-                    } else {
-                        hasil = "Error (Tidak bisa dibagi 0)";
-                    }
-                    break;
-            }
-
-            // Menampilkan hasil ke layar
-            let tampilanHasil = "<hr style='width: 50%;'>" +
-                                "<h3>Hasil Perhitungan:</h3>" +
-                                "<p style='font-size: 18pt;'>" + val1 + " " + op + " " + val2 + " = <b>" + hasil + "</b></p>";
-            
-            document.getElementById('tempat-hasil').innerHTML = tampilanHasil;
-        }
-    </script>
-
+    // Menampilkan tabel ke layar
+    document.getElementById('tempat-tabel').innerHTML = tabelHTML;
+</script>
 </body>
 </html>
