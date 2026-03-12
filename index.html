@@ -11,29 +11,27 @@
 </head>
 <body>
 
-    <div>
-        <div class="form-group">
-            <span class="label-merah">Nilai I</span>
-            <input type="number" id="nilai1" step="any" required style="width: 100px;">
-        </div>
+    <div class="form-group">
+        <span class="label-merah">Nilai I</span>
+        <input type="number" id="nilai1" step="any" required style="width: 100px;">
+    </div>
 
-        <div class="form-group">
-            <select id="operator">
-                <option value="+">+</option>
-                <option value="-">-</option>
-                <option value="*">*</option>
-                <option value="/">/</option>
-            </select>
-        </div>
+    <div class="form-group">
+        <select id="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+    </div>
 
-        <div class="form-group">
-            <span class="label-merah">Nilai II</span>
-            <input type="number" id="nilai2" step="any" required style="width: 100px;">
-        </div>
+    <div class="form-group">
+        <span class="label-merah">Nilai II</span>
+        <input type="number" id="nilai2" step="any" required style="width: 100px;">
+    </div>
 
-        <div class="form-group">
-            <button onclick="hitungHasil()">submit</button>
-        </div>
+    <div class="form-group">
+        <button type="button" onclick="hitungHasil()">submit</button>
     </div>
 
     <br><br>
@@ -42,13 +40,13 @@
 
     <script>
         function hitungHasil() {
-            // Mengambil angka dari input form
+            // Mengambil angka dari input
             let val1 = parseFloat(document.getElementById('nilai1').value);
             let val2 = parseFloat(document.getElementById('nilai2').value);
             let op = document.getElementById('operator').value;
             let hasil = 0;
 
-            // Validasi jika form kosong
+            // Validasi jika kolom kosong
             if (isNaN(val1) || isNaN(val2)) {
                 alert("Harap masukkan angka di kedua kolom!");
                 return;
