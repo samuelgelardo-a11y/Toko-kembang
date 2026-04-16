@@ -1,303 +1,60 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keuangan App</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #f1f3f6;
-}
-
-/* LOGIN SCREEN */
-.login {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    padding: 20px;
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
-}
-
-.login h2 {
-    color: white;
-    text-align: center;
-}
-
-.login input {
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: none;
-}
-
-.login button {
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    background: white;
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-/* APP */
-.app { display: none; }
-
-.header {
-    background: #4CAF50;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
-}
-
-/* CARD */
-.card {
-    background: white;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.balance {
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-ul { list-style: none; padding: 0; }
-
-li {
-    background: white;
-    margin: 8px;
-    padding: 12px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.income { color: green; }
-.expense { color: red; }
-
-.time { font-size: 11px; color: gray; }
-
-/* FAB */
-.fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background: #4CAF50;
-    color: white;
-    font-size: 25px;
-    border: none;
-}
-
-/* MODAL */
-.modal {
-    position: fixed;
-    bottom: -100%;
-    left: 0;
-    right: 0;
-    background: white;
-    padding: 20px;
-    border-radius: 15px 15px 0 0;
-    transition: 0.3s;
-}
-
-.modal.show { bottom: 0; }
-
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin: 6px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.logout {
-    background: orange;
-    margin: 10px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/b67e368fa6.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
 </head>
-
 <body>
-
-<!-- LOGIN -->
-<div class="login" id="loginBox">
-    <h2>🔐 Login Keuangan</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Masuk</button>
-</div>
-
-<!-- APP -->
-<div class="app" id="appBox">
-    <div class="header">💰 Keuangan App</div>
-
-    <div class="card">
-        <div class="balance">Saldo: Rp <span id="balance">0</span></div>
+    <div class="navbar">
+        <img src="./assets/images/logo warteg bemo.png" alt="">
+        <ul>
+            <li><a href="./index.html">Daftar Makanan</a></li>
+            <li><a href="./tentang-kami.html">Tentang Kami</a></li>
+        </ul>
     </div>
-
-    <div class="card">
-        <canvas id="chart"></canvas>
-    </div>
-
-    <div class="card">
-        <input type="date" id="filterDate" onchange="updateUI()">
-    </div>
-
-    <ul id="list"></ul>
-
-    <button class="logout" onclick="logout()">Logout</button>
-
-    <button class="fab" onclick="openModal()">+</button>
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-    <h3>Tambah Transaksi</h3>
-    <input type="text" id="desc" placeholder="Keterangan">
-    <input type="number" id="amount" placeholder="Jumlah">
-    <select id="type">
-        <option value="income">Pemasukan</option>
-        <option value="expense">Pengeluaran</option>
-    </select>
-    <button onclick="addTransaction()">Simpan</button>
-    <button onclick="closeModal()" style="background:red;">Batal</button>
-</div>
-
-<script>
-// LOGIN
-const USER = "admin";
-const PASS = "123";
-
-if (localStorage.getItem("login") === "true") showApp();
-
-function login() {
-    if (username.value === USER && password.value === PASS) {
-        localStorage.setItem("login", "true");
-        showApp();
-    } else {
-        alert("Login salah!");
-    }
-}
-
-function logout() {
-    localStorage.removeItem("login");
-    location.reload();
-}
-
-function showApp() {
-    loginBox.style.display = "none";
-    appBox.style.display = "block";
-}
-
-// DATA
-let transactions = JSON.parse(localStorage.getItem("data")) || [];
-
-function saveData() {
-    localStorage.setItem("data", JSON.stringify(transactions));
-}
-
-function getDateTime() {
-    let now = new Date();
-    return {
-        full: now.toLocaleString("id-ID"),
-        date: now.toISOString().split("T")[0]
-    };
-}
-
-// MODAL
-function openModal() { modal.classList.add("show"); }
-function closeModal() { modal.classList.remove("show"); }
-
-// TAMBAH
-function addTransaction() {
-    if (!desc.value || !amount.value) return alert("Isi dulu!");
-
-    let dt = getDateTime();
-
-    transactions.push({
-        desc: desc.value,
-        amount: parseInt(amount.value),
-        type: type.value,
-        time: dt.full,
-        date: dt.date
-    });
-
-    saveData();
-    updateUI();
-    closeModal();
-
-    desc.value = "";
-    amount.value = "";
-}
-
-// UI
-function updateUI() {
-    let list = document.getElementById("list");
-    let saldo = 0;
-    list.innerHTML = "";
-
-    let filter = filterDate.value;
-
-    let filtered = filter 
-        ? transactions.filter(t => t.date === filter)
-        : transactions;
-
-    let income = 0, expense = 0;
-
-    filtered.forEach(t => {
-        let li = document.createElement("li");
-
-        li.innerHTML = `
-            <div class="${t.type}">
-                ${t.desc} (Rp ${t.amount})
+    <div class="main">
+        <div class="content" id='foodList'>
+            
+        </div>
+        <div class="sidebar" id="cartList">
+            <!-- <div class="total">
+                <h1>Total: Rp. 30.000</h1>
+                <hr>
             </div>
-            <div class="time">${t.time}</div>
-        `;
+            <div class="card-order" >
+                <div class="detail">
+                    <img src="./assets/images/sotobetawi.jpg" alt="">
+                    <p>Soto Betawi</p>
+                    <span>3</span>
+                </div>
+                <button><i class="fas fa-trash"></i> Hapus</button>
+            </div>
+            <div class="card-order">
+                <div class="detail">
+                    <img src="./assets/images/es_teh_manis.jpg" alt="">
+                    <p>Es Teh Manis</p>
+                    <span>3</span>
 
-        list.appendChild(li);
-
-        if (t.type === "income") {
-            saldo += t.amount;
-            income += t.amount;
-        } else {
-            saldo -= t.amount;
-            expense += t.amount;
-        }
-    });
-
-    document.getElementById("balance").innerText = saldo;
-
-    drawChart(income, expense);
-}
-
-// CHART
-let chart;
-function drawChart(income, expense) {
-    if (chart) chart.destroy();
-
-    chart = new Chart(document.getElementById("chart"), {
-        type: "doughnut",
-        data: {
-            labels: ["Pemasukan", "Pengeluaran"],
-            datasets: [{ data: [income, expense] }]
-        }
-    });
-}
-
-updateUI();
-</script>
-
+                </div>
+                <button><i class="fas fa-trash"></i> Hapus</button>
+            </div>
+            <div class="card-order">
+                <div class="detail">
+                    <img src="./assets/images/telor_asin.jpg" alt="">
+                    <p>Telur Asin</p>
+                    <span>3</span>
+                </div>
+                <button><i class="fas fa-trash"></i> Hapus</button>
+            </div>
+            <div class="card-finish">
+                <button>ORDER SEKARANG</button>
+            </div> -->
+        </div>
+    </div>
+    <script src="./script.js"></script>
 </body>
 </html>
