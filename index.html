@@ -5,8 +5,256 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b67e368fa6.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./style.css">
-    <title>Document</title>
+    <title>Warteg Bemo</title>
+    
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+        * {
+          margin: 0;
+          font-family: "Poppins", sans-serif;
+        }
+        body {
+          background-color: #e3e9ff;
+        }
+        .navbar {
+          width: 100%;
+          height: 75px;
+          display: flex;
+          background-color: white;
+          -webkit-box-shadow: 3px 10px 25px -19px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 3px 10px 25px -19px rgba(0, 0, 0, 0.75);
+          box-shadow: 3px 10px 25px -19px rgba(0, 0, 0, 0.75);
+        }
+        .navbar ul {
+          list-style: none;
+          margin: 20px;
+          background-color: white;
+        }
+        .navbar ul li {
+          display: inline;
+          font-size: 20px;
+          font-weight: 500;
+          font-style: normal;
+          padding-right: 20px;
+          background-color: white;
+        }
+        .navbar ul li a {
+          text-decoration: none;
+          color: #122363;
+        }
+        .navbar ul li a:hover {
+          color: rgb(247, 143, 7);
+        }
+        .navbar img {
+          width: 70px;
+          height: 70px;
+          padding: 5px 0px 5px 35px;
+          margin: 0;
+          align-content: center;
+        }
+        .main {
+          position: relative;
+          justify-content: center;
+          display: flex;
+          overflow: hidden;
+        }
+        .content {
+          width: 70%;
+          text-align: justify;
+          padding: 15px 15px 15px 15px;
+          margin: 0;
+        }
+
+        .sidebar {
+          background-color: #122363;
+          width: 30%;
+          height: 90vh;
+          padding: 17px 10px 10px 10px;
+          flex-direction: column;
+          display: none;
+        }
+
+        .card-order {
+          width: 91%;
+          height: 50px;
+          margin: 10px 10px 10px 15px;
+          background-color: white;
+          display: flex;
+          text-align: center;
+          border-radius: 10px;
+          -webkit-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+        }
+
+        .card-order img {
+          width: 50px;
+          border-radius: 10px;
+          margin: 5px;
+        }
+
+        .card-order p {
+          padding: 10px;
+          font-size: 17px;
+          width: 70%;
+          font-weight: 500;
+          color: #4e4e4e;
+          text-align: left;
+        }
+
+        .card-order span {
+          padding: 10px;
+          font-size: 17px;
+          font-weight: 500;
+          color: #4e4e4e;
+          width: 1%;
+        }
+
+        .card-order button {
+          background-color: rgb(214, 11, 11);
+          border-radius: 10px;
+          padding: 0;
+          margin: 10px 0px 10px 20px;
+          width: 80px;
+          height: 30px;
+          border: none;
+          color: whitesmoke;
+          font-weight: 500;
+          align-items: flex-end;
+        }
+
+        .card-order button:hover {
+          background-color: rgb(163, 12, 12);
+        }
+
+        .card {
+          width: 280px;
+          height: max-content;
+          background-color: white;
+          border-radius: 10px;
+          margin: 10px;
+          display: inline-block;
+          -webkit-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+        }
+
+        .card img {
+          width: 92%;
+          height: 80%;
+          margin: 10px 10px 0px 10px;
+          border-radius: 10px;
+        }
+
+        .card p {
+          margin-left: 10px;
+          font-size: 18px;
+          font-style: normal;
+          font-family: "Mulish", sans-serif;
+          color: #4e4e4e;
+          font-weight: 700;
+        }
+
+        .card hr {
+          margin: 10px;
+          color: #b8b8b8;
+          border-color: #e2e1e1;
+        }
+
+        .action {
+          display: flex;
+          justify-content: space-between;
+          padding: 0px 10px 10px 10px;
+        }
+
+        .order span {
+          font-size: 17px;
+          font-weight: 800;
+        }
+
+        .card-finish button {
+          border: none;
+          text-align: center;
+          width: 90%;
+          height: 50px;
+          margin: 10px 10px 10px 15px;
+          background-color: rgb(247, 143, 7);
+          border-radius: 10px;
+          font-size: 20px;
+          font-weight: 600;
+          color: white;
+          -webkit-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+        }
+
+        .card-finish button:hover {
+          background-color: rgb(211, 120, 0);
+        }
+
+        .fas {
+          color: #ffffff;
+        }
+
+        .action button {
+          background-color: #00b91f;
+          border-radius: 10px;
+          border: none;
+          color: white;
+        }
+
+        .action button:hover {
+          background-color: #189e2e;
+        }
+
+        .total {
+          margin: 0px 10px 20px 15px;
+        }
+
+        .total h1 {
+          color: white;
+        }
+
+        .detail {
+          width: 70%;
+          display: flex;
+        }
+
+        .about {
+          margin-top: 40px;
+          width: 100%;
+          display: inline-block;
+          text-align: center;
+        }
+        .about img {
+          width: 300px;
+        }
+
+        .team {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 50px;
+        }
+        .person {
+          margin-top: 20px;
+          margin-right: 10px;
+          margin-left: 10px;
+          width: 200px;
+          height: 200px;
+        }
+        .person img {
+          border-radius: 100px;
+          width: 100px;
+        }
+        .person p {
+          font-size: 18px;
+          font-weight: 500;
+        }
+        .person span {
+          font-size: 14px;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -21,40 +269,270 @@
             
         </div>
         <div class="sidebar" id="cartList">
-            <!-- <div class="total">
-                <h1>Total: Rp. 30.000</h1>
-                <hr>
-            </div>
-            <div class="card-order" >
-                <div class="detail">
-                    <img src="./assets/images/sotobetawi.jpg" alt="">
-                    <p>Soto Betawi</p>
-                    <span>3</span>
-                </div>
-                <button><i class="fas fa-trash"></i> Hapus</button>
-            </div>
-            <div class="card-order">
-                <div class="detail">
-                    <img src="./assets/images/es_teh_manis.jpg" alt="">
-                    <p>Es Teh Manis</p>
-                    <span>3</span>
-
-                </div>
-                <button><i class="fas fa-trash"></i> Hapus</button>
-            </div>
-            <div class="card-order">
-                <div class="detail">
-                    <img src="./assets/images/telor_asin.jpg" alt="">
-                    <p>Telur Asin</p>
-                    <span>3</span>
-                </div>
-                <button><i class="fas fa-trash"></i> Hapus</button>
-            </div>
-            <div class="card-finish">
-                <button>ORDER SEKARANG</button>
-            </div> -->
         </div>
     </div>
-    <script src="./script.js"></script>
+
+    <script>
+        let totalHargaMakanan = 0;
+        let food = [
+            {
+                name:`Rawon`,
+                stok: 2,
+                harga: 20000,
+                image: './assets/images/rawon.jpg'
+            },
+            {
+                name:`Soto Betawi`,
+                stok: 0,
+                harga: 60000,
+                image: './assets/images/sotobetawi.jpg'
+            },
+            {
+                name:`Krupuk`,
+                stok: 12,
+                harga: 2500,
+                image: './assets/images/kerupuk_putih.jpg'
+            },
+            {
+                name:`Telur Asin`,
+                stok: 20,
+                harga: 70000,
+                image: './assets/images/telor_asin.jpg'
+            },
+            {
+                name:`Es Teh Manis`,
+                stok: 25,
+                harga: 20000,
+                image: './assets/images/es_teh_manis.jpg'
+            },
+        ]
+
+        let cart = [];
+        let pembelian = [];
+
+        function debug(){
+            console.log(pembelian); 
+        }
+
+        function checkAvailable(){
+            var available = true;
+            for(var i = 0; i<cart.length; i++){
+                for(var j = 0; j<food.length; j++){
+                    if(cart[i].name === food[j].name){
+                        if(food[j].stok < cart[i].jumlah){
+                            available = false;
+                            alert(`Stok ${food[j].name} tinggal ${food[j].stok}`);
+                            break;
+                        }
+                    }  
+                }
+                if(!available){
+                    break;
+                }
+            }
+            return available
+        }
+
+        function orderFood(){
+            if(checkAvailable()){
+                for(var x = 0; x<cart.length; x++){
+                    for(var y = 0; y<food.length; y++){
+                        if(cart[x].name === food[y].name){  
+                                food[y].stok -= cart[x].jumlah;
+                        }
+                    }
+                }
+                var cartList = document.getElementById('cartList');
+
+                // UNTUK MATIKAN CARTLIST
+                cartList.setAttribute('style','display:none');
+                alert(`Pesanan telah diterima, Mohon menunggu, Total Harga : Rp${toRupiah(totalHargaMakanan)},00`);
+                cart.push(totalHargaMakanan);
+                pembelian.push(cart);
+                totalHargaMakanan = 0;
+                cart = [];
+                generateData();    
+            }
+            console.log(pembelian); 
+            console.log(food);
+        }
+
+        function addtoCart(index) {
+            console.log(food[index].name);
+            var hasExist = false;
+            var hasEmpty = false;
+            if(food[index].stok <= 0){
+                alert(`${food[index].name} habis, silahkan pesan menu lainnya`);
+                hasEmpty = true;
+            }
+            for(var i = 0; i<cart.length; i++){
+                if(food[index].name === cart[i].name){
+                    if(food[index].stok - cart[i].jumlah <=0){
+                        alert(`${food[index].name} habis, silahkan pesan menu lainnya`);
+                        hasEmpty = true;
+                        break;
+                    }else{
+                        totalHargaMakanan += cart[i].harga;
+                        cart[i].jumlah ++;
+                        hasExist = true;
+                        break;
+                    }      
+                }
+            }
+            if(!hasExist && !hasEmpty){
+                let obj ={
+                    name: food[index].name,
+                    harga: food[index].harga,
+                    jumlah: 1,
+                    image: food[index].image,
+                }
+                totalHargaMakanan +=food[index].harga;
+                cart.push(obj);
+            }
+            generateData();
+            var cartlist = document.getElementById('cartList');
+            if(cart.length !== 0){
+                cartlist.setAttribute('style', 'display:inline-block');
+            }
+        }
+
+        function removeFood(value){
+            if(cart[value].jumlah > 0){
+                totalHargaMakanan -=cart[value].harga;
+                cart[value].jumlah--;
+            }   
+            if(cart[value].jumlah === 0){
+                cart.splice(value,1);
+            }
+            generateData();
+            var cartlist = document.getElementById('cartList');
+            if(cart.length !== 0){
+                cartlist.setAttribute('style', 'display:inline-block');
+            }else{
+                // UNTUK MATIKAN CARTLIST
+                cartlist.setAttribute('style', 'display:none');
+            }
+        }
+
+        function toRupiah(harga){
+            var result = '';
+            harga = String(harga);
+            var arr = [];
+            var count = 0;
+            for(var i = harga.length-1; i>=0; i--){
+                if(count === 3 && harga[i] !=undefined){
+                    arr.push('.');
+                    arr.push(harga[i]);
+                    count = 1;
+                }else{
+                    arr.push(harga[i]);
+                    count++;
+                }
+            }
+            for(var i = arr.length-1; i>=0; i--){
+                result += arr[i];
+            }
+            return result;
+        }
+
+        function generateData(){
+            const foodList = document.getElementById('foodList');
+            const cartList = document.getElementById('cartList');
+            foodList.innerHTML = '';
+            cartList.innerHTML = '';
+            
+            for(var i =0; i<food.length; i++){
+                let name = food[i].name;
+                let stok = food[i].stok;
+                let harga = food[i].harga;
+                let image = food[i].image;
+              
+                let divCard = document.createElement('div');
+                divCard.classList.add('card')
+
+            
+                let imageData = document.createElement('img')
+                imageData.setAttribute("src",image);
+                divCard.appendChild(imageData);
+            
+                let title = document.createElement('p');
+                title.innerHTML = name;
+                divCard.appendChild(title);
+
+                let divAction = document.createElement('div');
+                divAction.classList.add('action');
+
+                let spanData = document.createElement('span');
+                spanData.innerHTML = `Rp ${toRupiah(harga)},00 | Stok : ${stok}`;
+                divAction.appendChild(spanData);
+
+                let buttonAdd = document.createElement('button');
+                buttonAdd.innerHTML = '<i class="fas fa-cart-plus"></i> Pesan';
+                buttonAdd.setAttribute('value', i);
+                buttonAdd.setAttribute('onclick', 'addtoCart(this.value)');
+                divAction.appendChild(buttonAdd);
+                divCard.appendChild(divAction);
+                foodList.appendChild(divCard);
+            }
+
+            let totalDiv = document.createElement('div');
+            totalDiv.classList.add('total');
+
+            let totalh1 = document.createElement('h1');
+            totalh1.innerHTML = `TOTAL : Rp${toRupiah(totalHargaMakanan)},00`;
+            totalDiv.appendChild(totalh1);
+
+            let totalhr = document.createElement('hr');
+            totalDiv.appendChild(totalhr);
+            cartList.appendChild(totalDiv);
+
+            for(var x =0; x<cart.length; x++){
+                
+                let name = cart[x].name;
+                let jumlah = cart[x].jumlah;
+                let harga = cart[x].harga;
+                let image = cart[x].image;
+                
+                let divCardx = document.createElement('div');
+                divCardx.classList.add('card-order') ;  
+
+                let divCardDetail = document.createElement('div');
+                divCardDetail.classList.add('detail');
+
+                let imageData = document.createElement('img')
+                imageData.setAttribute("src",image);
+                divCardDetail.appendChild(imageData);
+                
+                let foodName = document.createElement('p');
+                foodName.innerHTML = name;
+                divCardDetail.appendChild(foodName);
+
+                let foodJumlah = document.createElement('span');
+                foodJumlah.innerHTML = jumlah;
+                divCardDetail.appendChild(foodJumlah);
+                
+                divCardx.appendChild(divCardDetail);
+
+                let buttonCancel = document.createElement('button');
+                buttonCancel.setAttribute('value', x );
+                buttonCancel.setAttribute('id', 'cancelCart' );
+                buttonCancel.setAttribute('onclick', 'removeFood(this.value)');
+                buttonCancel.innerHTML = '<i class="fas fa-trash"></i> Hapus';
+                divCardx.appendChild(buttonCancel);
+            
+                cartList.appendChild(divCardx);
+            }
+
+            let divbutton = document.createElement('div');
+            divbutton.classList.add("card-finish");
+
+            let buttonOrder = document.createElement('button');
+            buttonOrder.setAttribute('onclick', 'orderFood()');
+            buttonOrder.innerHTML = 'ORDER SEKARANG';
+            divbutton.appendChild(buttonOrder);
+            cartList.appendChild(divbutton);
+        }
+        generateData()
+    </script>
 </body>
 </html>
