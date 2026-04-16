@@ -12,6 +12,8 @@
 
         * {
           margin: 0;
+          padding: 0;
+          box-sizing: border-box; /* Ditambahkan agar padding tidak merusak lebar elemen */
           font-family: "Poppins", sans-serif;
         }
         body {
@@ -21,6 +23,7 @@
           width: 100%;
           height: 75px;
           display: flex;
+          align-items: center;
           background-color: white;
           -webkit-box-shadow: 3px 10px 25px -19px rgba(0, 0, 0, 0.75);
           -moz-box-shadow: 3px 10px 25px -19px rgba(0, 0, 0, 0.75);
@@ -35,9 +38,7 @@
           display: inline;
           font-size: 20px;
           font-weight: 500;
-          font-style: normal;
           padding-right: 20px;
-          background-color: white;
         }
         .navbar ul li a {
           text-decoration: none;
@@ -50,41 +51,39 @@
           width: 70px;
           height: 70px;
           padding: 5px 0px 5px 35px;
-          margin: 0;
-          align-content: center;
         }
         .main {
           position: relative;
           justify-content: center;
           display: flex;
-          overflow: hidden;
+          overflow: visible; /* Diubah agar bisa di-scroll di HP */
         }
         .content {
           width: 70%;
-          text-align: justify;
-          padding: 15px 15px 15px 15px;
-          margin: 0;
+          padding: 15px;
+          display: flex;
+          flex-wrap: wrap; /* Agar card bisa turun ke baris baru */
+          justify-content: flex-start;
         }
 
         .sidebar {
           background-color: #122363;
           width: 30%;
-          height: 90vh;
+          min-height: 90vh;
           padding: 17px 10px 10px 10px;
           flex-direction: column;
           display: none;
         }
 
         .card-order {
-          width: 91%;
-          height: 50px;
-          margin: 10px 10px 10px 15px;
+          width: 100%;
+          height: max-content;
+          margin: 10px 0;
           background-color: white;
           display: flex;
-          text-align: center;
+          align-items: center;
           border-radius: 10px;
-          -webkit-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
-          -moz-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
+          padding: 5px;
           box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
         }
 
@@ -95,37 +94,29 @@
         }
 
         .card-order p {
-          padding: 10px;
-          font-size: 17px;
-          width: 70%;
+          padding: 5px;
+          font-size: 15px;
+          width: 50%;
           font-weight: 500;
           color: #4e4e4e;
-          text-align: left;
         }
 
         .card-order span {
-          padding: 10px;
-          font-size: 17px;
+          padding: 5px;
+          font-size: 15px;
           font-weight: 500;
           color: #4e4e4e;
-          width: 1%;
         }
 
         .card-order button {
           background-color: rgb(214, 11, 11);
           border-radius: 10px;
-          padding: 0;
-          margin: 10px 0px 10px 20px;
-          width: 80px;
-          height: 30px;
+          padding: 5px 10px;
+          margin-left: auto;
           border: none;
           color: whitesmoke;
           font-weight: 500;
-          align-items: flex-end;
-        }
-
-        .card-order button:hover {
-          background-color: rgb(163, 12, 12);
+          cursor: pointer;
         }
 
         .card {
@@ -135,66 +126,47 @@
           border-radius: 10px;
           margin: 10px;
           display: inline-block;
-          -webkit-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
-          -moz-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
           box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
         }
 
         .card img {
-          width: 92%;
-          height: 80%;
-          margin: 10px 10px 0px 10px;
-          border-radius: 10px;
+          width: 100%;
+          height: 200px;
+          object-fit: cover; /* Agar gambar tidak gepeng */
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
         }
 
         .card p {
-          margin-left: 10px;
+          margin: 10px;
           font-size: 18px;
-          font-style: normal;
-          font-family: "Mulish", sans-serif;
           color: #4e4e4e;
           font-weight: 700;
-        }
-
-        .card hr {
-          margin: 10px;
-          color: #b8b8b8;
-          border-color: #e2e1e1;
         }
 
         .action {
           display: flex;
           justify-content: space-between;
-          padding: 0px 10px 10px 10px;
+          align-items: center;
+          padding: 0px 10px 15px 10px;
         }
 
-        .order span {
-          font-size: 17px;
-          font-weight: 800;
+        .action span {
+          font-size: 14px;
+          font-weight: 600;
         }
 
         .card-finish button {
           border: none;
-          text-align: center;
-          width: 90%;
+          width: 100%;
           height: 50px;
-          margin: 10px 10px 10px 15px;
+          margin-top: 15px;
           background-color: rgb(247, 143, 7);
           border-radius: 10px;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 600;
           color: white;
-          -webkit-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
-          -moz-box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
-          box-shadow: 9px 9px 18px -13px rgba(0, 0, 0, 0.75);
-        }
-
-        .card-finish button:hover {
-          background-color: rgb(211, 120, 0);
-        }
-
-        .fas {
-          color: #ffffff;
+          cursor: pointer;
         }
 
         .action button {
@@ -202,117 +174,102 @@
           border-radius: 10px;
           border: none;
           color: white;
-        }
-
-        .action button:hover {
-          background-color: #189e2e;
-        }
-
-        .total {
-          margin: 0px 10px 20px 15px;
+          padding: 8px 12px;
+          cursor: pointer;
         }
 
         .total h1 {
           color: white;
+          font-size: 20px;
+          margin-bottom: 10px;
         }
 
         .detail {
-          width: 70%;
-          display: flex;
-        }
-
-        .about {
-          margin-top: 40px;
           width: 100%;
-          display: inline-block;
-          text-align: center;
-        }
-        .about img {
-          width: 300px;
+          display: flex;
+          align-items: center;
         }
 
-        .team {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 50px;
+        /* ========================================= */
+        /* MEDIA QUERIES UNTUK TAMPILAN HP (MOBILE)  */
+        /* ========================================= */
+        @media screen and (max-width: 768px) {
+            .navbar {
+                height: auto;
+                flex-direction: column;
+                padding: 10px 0;
+            }
+            .navbar img {
+                padding: 0;
+                margin-bottom: 10px;
+            }
+            .navbar ul {
+                margin: 0;
+                text-align: center;
+            }
+            .navbar ul li {
+                display: inline-block;
+                padding: 5px 10px;
+                font-size: 16px;
+            }
+            .main {
+                flex-direction: column; /* Mengubah layout jadi atas-bawah */
+            }
+            .content {
+                width: 100%; /* Lebar menu makanan jadi 100% */
+                justify-content: center;
+            }
+            .sidebar {
+                width: 100%; /* Lebar keranjang jadi 100% */
+                height: auto;
+                padding-bottom: 30px;
+            }
+            .card {
+                width: 45%; /* Di HP agak besar, tampil 2 kolom */
+                margin: 2%;
+            }
+            .action {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .action button {
+                width: 100%;
+            }
         }
-        .person {
-          margin-top: 20px;
-          margin-right: 10px;
-          margin-left: 10px;
-          width: 200px;
-          height: 200px;
-        }
-        .person img {
-          border-radius: 100px;
-          width: 100px;
-        }
-        .person p {
-          font-size: 18px;
-          font-weight: 500;
-        }
-        .person span {
-          font-size: 14px;
+
+        @media screen and (max-width: 480px) {
+            .card {
+                width: 90%; /* Di HP sangat kecil, tampil 1 kolom */
+                margin: 5%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <img src="./assets/images/logo warteg bemo.png" alt="">
+        <img src="./assets/images/logo warteg bemo.png" alt="Logo">
         <ul>
             <li><a href="./index.html">Daftar Makanan</a></li>
             <li><a href="./tentang-kami.html">Tentang Kami</a></li>
         </ul>
     </div>
     <div class="main">
-        <div class="content" id='foodList'>
-            
-        </div>
-        <div class="sidebar" id="cartList">
-        </div>
+        <div class="content" id='foodList'></div>
+        <div class="sidebar" id="cartList"></div>
     </div>
 
     <script>
         let totalHargaMakanan = 0;
         let food = [
-            {
-                name:`Rawon`,
-                stok: 2,
-                harga: 20000,
-                image: './assets/images/rawon.jpg'
-            },
-            {
-                name:`Soto Betawi`,
-                stok: 0,
-                harga: 60000,
-                image: './assets/images/sotobetawi.jpg'
-            },
-            {
-                name:`Krupuk`,
-                stok: 12,
-                harga: 2500,
-                image: './assets/images/kerupuk_putih.jpg'
-            },
-            {
-                name:`Telur Asin`,
-                stok: 20,
-                harga: 70000,
-                image: './assets/images/telor_asin.jpg'
-            },
-            {
-                name:`Es Teh Manis`,
-                stok: 25,
-                harga: 20000,
-                image: './assets/images/es_teh_manis.jpg'
-            },
+            { name:`Rawon`, stok: 2, harga: 20000, image: './assets/images/rawon.jpg' },
+            { name:`Soto Betawi`, stok: 0, harga: 60000, image: './assets/images/sotobetawi.jpg' },
+            { name:`Krupuk`, stok: 12, harga: 2500, image: './assets/images/kerupuk_putih.jpg' },
+            { name:`Telur Asin`, stok: 20, harga: 70000, image: './assets/images/telor_asin.jpg' },
+            { name:`Es Teh Manis`, stok: 25, harga: 20000, image: './assets/images/es_teh_manis.jpg' },
         ]
 
         let cart = [];
         let pembelian = [];
-
-        function debug(){
-            console.log(pembelian); 
-        }
 
         function checkAvailable(){
             var available = true;
@@ -326,9 +283,7 @@
                         }
                     }  
                 }
-                if(!available){
-                    break;
-                }
+                if(!available) break;
             }
             return available
         }
@@ -343,22 +298,17 @@
                     }
                 }
                 var cartList = document.getElementById('cartList');
-
-                // UNTUK MATIKAN CARTLIST
-                cartList.setAttribute('style','display:none');
-                alert(`Pesanan telah diterima, Mohon menunggu, Total Harga : Rp${toRupiah(totalHargaMakanan)},00`);
+                cartList.style.display = 'none';
+                alert(`Pesanan telah diterima. Total Harga : Rp${toRupiah(totalHargaMakanan)},00`);
                 cart.push(totalHargaMakanan);
                 pembelian.push(cart);
                 totalHargaMakanan = 0;
                 cart = [];
                 generateData();    
             }
-            console.log(pembelian); 
-            console.log(food);
         }
 
         function addtoCart(index) {
-            console.log(food[index].name);
             var hasExist = false;
             var hasEmpty = false;
             if(food[index].stok <= 0){
@@ -392,7 +342,7 @@
             generateData();
             var cartlist = document.getElementById('cartList');
             if(cart.length !== 0){
-                cartlist.setAttribute('style', 'display:inline-block');
+                cartlist.style.display = 'flex';
             }
         }
 
@@ -407,10 +357,9 @@
             generateData();
             var cartlist = document.getElementById('cartList');
             if(cart.length !== 0){
-                cartlist.setAttribute('style', 'display:inline-block');
+                cartlist.style.display = 'flex';
             }else{
-                // UNTUK MATIKAN CARTLIST
-                cartlist.setAttribute('style', 'display:none');
+                cartlist.style.display = 'none';
             }
         }
 
@@ -450,7 +399,6 @@
                 let divCard = document.createElement('div');
                 divCard.classList.add('card')
 
-            
                 let imageData = document.createElement('img')
                 imageData.setAttribute("src",image);
                 divCard.appendChild(imageData);
@@ -463,7 +411,7 @@
                 divAction.classList.add('action');
 
                 let spanData = document.createElement('span');
-                spanData.innerHTML = `Rp ${toRupiah(harga)},00 | Stok : ${stok}`;
+                spanData.innerHTML = `Rp ${toRupiah(harga)} | Stok: ${stok}`;
                 divAction.appendChild(spanData);
 
                 let buttonAdd = document.createElement('button');
@@ -479,7 +427,7 @@
             totalDiv.classList.add('total');
 
             let totalh1 = document.createElement('h1');
-            totalh1.innerHTML = `TOTAL : Rp${toRupiah(totalHargaMakanan)},00`;
+            totalh1.innerHTML = `TOTAL : Rp${toRupiah(totalHargaMakanan)}`;
             totalDiv.appendChild(totalh1);
 
             let totalhr = document.createElement('hr');
@@ -487,14 +435,12 @@
             cartList.appendChild(totalDiv);
 
             for(var x =0; x<cart.length; x++){
-                
                 let name = cart[x].name;
                 let jumlah = cart[x].jumlah;
-                let harga = cart[x].harga;
                 let image = cart[x].image;
                 
                 let divCardx = document.createElement('div');
-                divCardx.classList.add('card-order') ;  
+                divCardx.classList.add('card-order');  
 
                 let divCardDetail = document.createElement('div');
                 divCardDetail.classList.add('detail');
@@ -508,16 +454,15 @@
                 divCardDetail.appendChild(foodName);
 
                 let foodJumlah = document.createElement('span');
-                foodJumlah.innerHTML = jumlah;
+                foodJumlah.innerHTML = "x" + jumlah;
                 divCardDetail.appendChild(foodJumlah);
                 
                 divCardx.appendChild(divCardDetail);
 
                 let buttonCancel = document.createElement('button');
                 buttonCancel.setAttribute('value', x );
-                buttonCancel.setAttribute('id', 'cancelCart' );
                 buttonCancel.setAttribute('onclick', 'removeFood(this.value)');
-                buttonCancel.innerHTML = '<i class="fas fa-trash"></i> Hapus';
+                buttonCancel.innerHTML = '<i class="fas fa-trash"></i>';
                 divCardx.appendChild(buttonCancel);
             
                 cartList.appendChild(divCardx);
